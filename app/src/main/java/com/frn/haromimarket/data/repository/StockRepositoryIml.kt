@@ -62,10 +62,10 @@ class StockRepositoryIml @Inject constructor(
 
 
 
-            remoteListing?.let { listinigs ->
+            remoteListing?.let { listings ->
                 dao.clearCompanyListing()
                 dao.insertCompanyListings(
-                    listinigs.map { it.toCompanyListingEntity() }
+                    listings.map { it.toCompanyListingEntity() }
                 )
                 emit(Resource.Success<List<CompanyListing>>(
                     data = dao

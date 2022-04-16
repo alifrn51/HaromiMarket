@@ -12,5 +12,4 @@ interface StockRepository {
     ): Flow<Resource<List<CompanyListing>>>
 
 
-
 }
