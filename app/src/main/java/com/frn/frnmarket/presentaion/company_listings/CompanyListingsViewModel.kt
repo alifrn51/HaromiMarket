@@ -24,6 +24,10 @@ class CompanyListingsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
+    init {
+        getCompanyListings( )
+    }
+
     fun onEvent(event: CompanyListingsEvent) {
         when (event) {
             is CompanyListingsEvent.Refresh -> {
@@ -48,7 +52,8 @@ class CompanyListingsViewModel @Inject constructor(
     ){
         viewModelScope.launch {
 
-            repository.getCompanyListings(fetchFromRemote, query)
+            repository
+                .getCompanyListings(fetchFromRemote, query)
                 .collect{ result ->
                     when(result){
 
@@ -60,7 +65,9 @@ class CompanyListingsViewModel @Inject constructor(
                             }
                         }
 
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            state = CompanyListingsState(error = result.message ?: "An Unexpected error occured")
+                        }
 
                         is Resource.Loading -> {
                             state = state.copy(isLoading = result.isLoading)
